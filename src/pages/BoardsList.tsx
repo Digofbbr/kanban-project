@@ -27,6 +27,7 @@ const BoardsList = () => {
             navigate(`/boards/${id}`)
         }else{
             alert("You need a title for your Board")
+            
         }
     }
 
