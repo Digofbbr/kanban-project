@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { Card, RootState } from '../types'
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
 import { addCard, deleteBoard, updateCard } from '../store/boardsSlice'
+import type { Card, RootState } from '../types'
 
 const BoardDetails = () => {
 
@@ -23,7 +23,6 @@ const BoardDetails = () => {
   const handleAddCard = (e) => {
     e.preventDefault()
     if(newCardTitle.trim() && boardId){
-      console.log('erro')
       const newCard: Card = {
         id: crypto.randomUUID(),
         title: newCardTitle,
@@ -33,7 +32,6 @@ const BoardDetails = () => {
       }
 
       dispatch(addCard({boardId , card: newCard}))
-
       setNewCardTitle("")
       setIsAddingCard(false)
     }else{
@@ -48,15 +46,15 @@ const BoardDetails = () => {
     }
   }
 
-  const handleDragStart = (card) => {
+  const handleDragStart = (card: Card) => {
     setDraggedCard(card)
   }
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
   }
 
-  const handleDrop = (status) => {
+  const handleDrop = (status: Card["status"]) => {
     if(draggedCard && boardId && status !== draggedCard.status){
       const updatedCard = {
         ...draggedCard,

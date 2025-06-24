@@ -1,23 +1,27 @@
 import { ArrowLeft, Save, Trash2 } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { deleteCard, updateCard } from '../store/boardsSlice'
+import type { Card, RootState } from '../types'
 
 const CardDetails = () => {
-  const {boardId, cardId} = useParams()
+  const {boardId = "", cardId = ""} = useParams()
   const navigate = useNavigate()
-  
-  const card = useSelector(state => state.boards.items[boardId!].cards.find(card => card.id === cardId))
-
-  const [cardTitle, setCardTitle] = useState(card?.title)
-  const [cardDescription, setCardDescription] = useState(card?.description)
-  const [cardStatus, setCardStatus] = useState(card?.status)
-
   const dispatch = useDispatch()
+  
+  const card = useSelector((state: RootState) => {
+    const board = state.boards.items[boardId!];
+    return board.cards.find(card => card.id === cardId)
+  })
+
+  const [cardTitle, setCardTitle] = useState(card!.title)
+  const [cardDescription, setCardDescription] = useState(card!.description)
+  const [cardStatus, setCardStatus] = useState(card!.status)
+
 
   const handleSaveCard = () => {
-    const updatedCard = {
+    const updatedCard: Card = {
       id: card!.id,
       title: cardTitle,
       description: cardDescription,
@@ -66,14 +70,14 @@ const CardDetails = () => {
 
         <div className='flex flex-col gap-4'>
           <label htmlFor="status">Status</label>
-          <select name="status" id="status" value={cardStatus} onChange={(e) => setCardStatus(e.target.value)} className='bg-dark border border-primary px-4 py-2 rounded-sm cursor-pointer text-sm'>
+          <select name="status" id="status" value={cardStatus} onChange={(e) => setCardStatus(e.target.value as Card["status"])} className='bg-dark border border-primary px-4 py-2 rounded-sm cursor-pointer text-sm'>
             <option value="todo">To Do</option>
             <option value="inprogress">In Progress</option>
             <option value="done">Done</option>
           </select>
         </div>
 
-        <p className='text-xl font-bold text-primary'>Created: {new Date(card?.createAt).toLocaleString()}</p>
+        <p className='text-xl font-bold text-primary'>Created: {new Date(card!.createAt).toLocaleString()}</p>
       </form>
     </section>
   )

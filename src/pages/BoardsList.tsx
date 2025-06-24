@@ -2,8 +2,8 @@ import { Layout, Plus } from "lucide-react"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import type { RootState } from "../types"
 import { createBoard } from "../store/boardsSlice"
+import type { RootState } from "../types"
 
 const BoardsList = () => {
 
